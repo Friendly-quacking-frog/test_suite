@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Test Suite',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.green,
       ),
       home: const MyHomePage(title: 'Test Suite'),
     );
@@ -39,7 +40,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String? selectedDirectory;
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +62,17 @@ class _MyHomePageState extends State<MyHomePage> {
               color: Colors.orange,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(400, 400),
-                  primary: Colors.blue,
-                  onSurface: Colors.red,
+                  minimumSize: const Size(400, 400),
+                  backgroundColor: Colors.blue,
+                  disabledForegroundColor: Colors.red.withOpacity(0.38),
+                  disabledBackgroundColor: Colors.red.withOpacity(0.12),
                 ),
                 onPressed: () {
-                  print("Upload");
+                  print("Create");
                 },
-                child: Column(
+                child: const Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
+                  children: [
                     Icon(Icons.add_circle_outline_outlined),
                     Text('Создать тест')
                   ],
@@ -81,19 +83,24 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  minimumSize: Size(400, 400),
-                  primary: Colors.blue,
-                  onSurface: Colors.red,
+                  minimumSize: const Size(400, 400),
+                  backgroundColor: Colors.blue,
+                  disabledForegroundColor: Colors.red.withOpacity(0.38),
+                  disabledBackgroundColor: Colors.red.withOpacity(0.12),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   print("Open");
+                  selectedDirectory =
+                      await FilePicker.platform.getDirectoryPath();
+                  if (selectedDirectory == null) {
+                    // User canceled the picker
+                  } else {
+                    print(selectedDirectory);
+                  }
                 },
-                child: Column(
+                child: const Column(
                   mainAxisSize: MainAxisSize.min,
-                  children: const [
-                    Icon(Icons.upload_file),
-                    Text('Открыть тест')
-                  ],
+                  children: [Icon(Icons.upload_file), Text('Открыть тест')],
                 ),
               ),
             )),
