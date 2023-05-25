@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:windows/TestConstructor.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,6 +43,10 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String? selectedDirectory;
 
+  void startTest(String path) {
+    TestConstructor constructor = new TestConstructor(path);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +54,6 @@ class _MyHomePageState extends State<MyHomePage> {
           title: Text(widget.title),
         ),
         body: Center(
-            // Center is a layout widget. It takes a single child and positions it
-            // in the middle of the parent.
             child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -96,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     // User canceled the picker
                   } else {
                     print(selectedDirectory);
+                    startTest(selectedDirectory!);
                   }
                 },
                 child: const Column(
