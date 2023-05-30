@@ -46,7 +46,8 @@ class _QuestionBody extends State<QuestionBody> {
   //"Body" of answers
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
       children: <Widget>[
         Center(
             //Check for image and add if exists
@@ -54,7 +55,7 @@ class _QuestionBody extends State<QuestionBody> {
                 ? Container()
                 : Image.file(File(constructor.imagePath +
                     constructor.attachments[pageIndex]))),
-        Center(
+        const Center(
           child: Text(
             "Варианты ответа",
             style: TextStyle(fontSize: 25),
@@ -81,7 +82,6 @@ class _QuestionBody extends State<QuestionBody> {
                                       constructor: constructor,
                                       pageIndex: pageIndex + 1,
                                     )))
-                            //TODO: add results screen
                             : Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     TestResults(constructor: constructor),
@@ -89,7 +89,7 @@ class _QuestionBody extends State<QuestionBody> {
                       }));
             })
       ],
-    );
+    ));
   }
 }
 
@@ -102,8 +102,9 @@ class TestResults extends StatelessWidget {
   int testValue() {
     int amount = 0;
     for (int i = 0; i < constructor.amount; i++) {
-      if (constructor.correctIndexes[i] == constructor.selectedIndexes[i] + 1)
+      if (constructor.correctIndexes[i] == constructor.selectedIndexes[i] + 1) {
         amount++;
+      }
     }
     return amount;
   }
@@ -114,23 +115,28 @@ class TestResults extends StatelessWidget {
     int questionsAmount = constructor.amount;
 
     //Results screen
-    //TODO: Make pretty
     return Scaffold(
       appBar: AppBar(
         title: const Text("Результаты теста"),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Center(
-          child: Row(children: [
-            //Circular indicator of answers
-            CircularProgressIndicator(
-              value: testValue() / questionsAmount,
-              semanticsLabel:
-                  "Правильно ответов: $correctAmount из $questionsAmount",
-            ),
-            Text("Правильно ответов: $correctAmount из $questionsAmount")
-          ]),
+      body: Center(
+        child: Container(
+          child: Align(
+            alignment: Alignment.center,
+            child: Row(mainAxisSize: MainAxisSize.min, children: [
+              //Circular indicator of answers
+              CircularProgressIndicator(
+                value: testValue() / questionsAmount,
+                semanticsLabel:
+                    "Правильно ответов: $correctAmount из $questionsAmount",
+              ),
+              Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                    "Правильно ответов: $correctAmount из $questionsAmount"),
+              )
+            ]),
+          ),
         ),
       ),
     );
