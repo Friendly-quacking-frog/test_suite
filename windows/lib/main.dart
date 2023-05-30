@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:windows/TestConstructor.dart';
+import 'package:windows/TestPage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,7 +10,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  // This widget is the root of application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -25,15 +26,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -42,10 +34,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String? selectedDirectory;
-
-  void startTest(String path) {
-    TestConstructor constructor = new TestConstructor(path);
-  }
+  late TestConstructor testConstructor;
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +46,8 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Row(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            //Button to enter test construction mode
+            //TODO: question constriction mode
             Expanded(
                 child: Center(
                     child: Banner(
@@ -67,8 +58,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(400, 400),
                   backgroundColor: Colors.blue,
-                  disabledForegroundColor: Colors.red.withOpacity(0.38),
-                  disabledBackgroundColor: Colors.red.withOpacity(0.12),
                 ),
                 onPressed: () {
                   print("Create");
@@ -82,24 +71,30 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
             ))),
+            //Button to enter question loading mode
             Expanded(
                 child: Center(
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(400, 400),
                   backgroundColor: Colors.blue,
-                  disabledForegroundColor: Colors.red.withOpacity(0.38),
-                  disabledBackgroundColor: Colors.red.withOpacity(0.12),
                 ),
                 onPressed: () async {
-                  print("Open");
+                  //Open default Window directory selector on press
                   selectedDirectory =
                       await FilePicker.platform.getDirectoryPath();
                   if (selectedDirectory == null) {
-                    // User canceled the picker
+                    //User canceled the picker
                   } else {
-                    print(selectedDirectory);
-                    startTest(selectedDirectory!);
+                    //User selected some directory
+                    //TODO: check for validiy of folder
+                    //Right now we can only pray that its correct
+                    testConstructor = TestConstructor(selectedDirectory!);
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => TestPage(
+                              constructor: testConstructor,
+                              pageIndex: 0,
+                            )));
                   }
                 },
                 child: const Column(
