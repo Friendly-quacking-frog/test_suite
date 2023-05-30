@@ -82,10 +82,57 @@ class _QuestionBody extends State<QuestionBody> {
                                       pageIndex: pageIndex + 1,
                                     )))
                             //TODO: add results screen
-                            : print("END OF TEST");
+                            : Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    TestResults(constructor: constructor),
+                              ));
                       }));
             })
       ],
+    );
+  }
+}
+
+class TestResults extends StatelessWidget {
+  const TestResults({Key? key, required this.constructor}) : super(key: key);
+
+  final TestConstructor constructor;
+
+  //Calculate amount of correct test results
+  int testValue() {
+    int amount = 0;
+    for (int i = 0; i < constructor.amount; i++) {
+      if (constructor.correctIndexes[i] == constructor.selectedIndexes[i] + 1)
+        amount++;
+    }
+    return amount;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    int correctAmount = testValue();
+    int questionsAmount = constructor.amount;
+
+    //Results screen
+    //TODO: Make pretty
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Результаты теста"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Center(
+          child: Row(children: [
+            //Circular indicator of answers
+            CircularProgressIndicator(
+              value: testValue() / questionsAmount,
+              semanticsLabel:
+                  "Правильно ответов: $correctAmount из $questionsAmount",
+            ),
+            Text("Правильно ответов: $correctAmount из $questionsAmount")
+          ]),
+        ),
+      ),
     );
   }
 }

@@ -46,7 +46,7 @@ class TestConstructor {
     attachments = List.generate(amount, (index) => "NULL");
     selectedIndexes = List.generate(amount, (index) => 0);
     //Define question chunk size
-    int chunkSize = choices + amount;
+    int chunkSize = choices + 4;
     //Start parsing chunks of data
     for (int i = 0; i < amount; i++) {
       for (int j = 0; j < chunkSize; j++) {
