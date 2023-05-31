@@ -13,10 +13,11 @@ class TestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int ind = pageIndex + 1;
     return Scaffold(
         //Put question into appBar
         appBar: AppBar(
-          title: Text(constructor.questions[pageIndex][0]),
+          title: Text("Вопрос #$ind"),
         ),
         //Answers and attachment into body
         body: QuestionBody(constructor, pageIndex));
@@ -50,11 +51,25 @@ class _QuestionBody extends State<QuestionBody> {
         child: Column(
       children: <Widget>[
         Center(
+          child: Padding(
+            padding: EdgeInsets.all(15),
+            child: Text(
+              constructor.questions[pageIndex][0],
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+        ),
+        Center(
             //Check for image and add if exists
             child: constructor.attachments[pageIndex] == "NONE"
                 ? Container()
-                : Image.file(File(constructor.imagePath +
-                    constructor.attachments[pageIndex]))),
+                : Image.file(
+                    File(constructor.imagePath +
+                        constructor.attachments[pageIndex]),
+                    height: 300,
+                    width: 400,
+                    fit: BoxFit.fitWidth,
+                  )),
         const Center(
           child: Text(
             "Варианты ответа",

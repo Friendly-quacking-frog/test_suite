@@ -37,9 +37,9 @@ class TestConstructor {
     ///Parse test file
     //Begin with initializing a lot of needed variables
     //Read header of file and parse it
-    amount = int.parse(contents[0].split(" ").last);
-    title = contents[1].split(" ").last;
-    choices = int.parse(contents[2].split(" ").last);
+    amount = int.parse(contents[0].split("|").last);
+    title = contents[1].split("|").last;
+    choices = int.parse(contents[2].split("|").last);
     //Initialize lists
     correctIndexes = List.generate(amount, (index) => 0);
     questions = List.generate(amount, (index) => []);
@@ -55,16 +55,16 @@ class TestConstructor {
           continue;
         } else if (temp.contains("QUESTION")) {
           //Read question
-          questions[i].add(temp.split(" ").last);
+          questions[i].add(temp.split("|").last);
         } else if (temp.contains("ATTACH")) {
           //Read atachment data
-          attachments[i] = temp.split(" ").last;
+          attachments[i] = temp.split("|").last;
         } else if (temp.contains("CORRECT")) {
           //Read correct index
-          correctIndexes[i] = int.parse(temp.split(" ").last);
+          correctIndexes[i] = int.parse(temp.split("|").last);
         } else {
           //Read answer choices
-          questions[i].add(temp.split(" ").last);
+          questions[i].add(temp.split("|").last);
         }
       }
     }
